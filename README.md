@@ -1,4 +1,4 @@
-# Welcome to your Expo app 👋
+# Welcome to my first Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`npx create-expo-app@latest`](https://www.npmjs.com/package/create-expo-app).
 
