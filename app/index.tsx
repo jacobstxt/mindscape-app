@@ -1,14 +1,44 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
+import {StatusBar} from "expo-status-bar";
+import {AuthHeader} from "@/src/components/auth/AuthHeader";
+import {AppButton} from "@/src/components/ui/AppButton";
+import {useRouter} from "expo-router";
 
 export default function Index() {
+    const router = useRouter();
+
   return (
-      <View className="flex-1 items-center justify-center bg-slate-900">
-          <Text className="text-2xl font-bold text-white">
-               IOS app 🚀
-          </Text>
-          <Text className="text-slate-400 mt-2">
-              Проект успішно очищено та налаштовано
-          </Text>
-      </View>
+      <ScreenGradient className="p-6 start items-center">
+
+          {/*робить усі системні індикатори білими */}
+          <StatusBar style="light" />
+
+          <View className="flex-1 justify-between py-10">
+
+              {/* Верхня частина: Лого та Текст */}
+              <AuthHeader
+                  title="Welcome to Mindscape"
+                  subtitle="Create an account to get started on your health and happiness journey."
+              />
+
+              {/*Нижня частина: кнопки */}
+              <View className="gap-y-6">
+                  {/*Через пропси: title і variant передаю в кнопки надпис і дизайн*/}
+                  <AppButton
+                      title="Sign Up"
+                      variant="primary"
+                      onPress={() => router.push('/auth/sign-up')}
+                  />
+
+                  <AppButton
+                      title="Log In"
+                      variant="outline"
+                      onPress={() => console.log('Button Log In pressed')}
+                  />
+              </View>
+
+          </View>
+      </ScreenGradient>
   );
 }
