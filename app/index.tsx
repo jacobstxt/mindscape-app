@@ -20,6 +20,7 @@ export default function Index() {
               <AuthHeader
                   title="Welcome to Mindscape"
                   subtitle="Create an account to get started on your health and happiness journey."
+                  isIcon={true}
               />
 
               {/*Нижня частина: кнопки */}
@@ -34,7 +35,7 @@ export default function Index() {
                   <AppButton
                       title="Log In"
                       variant="outline"
-                      onPress={() => console.log('Button Log In pressed')}
+                      onPress={() => router.push('/auth/log-in')}
                   />
               </View>
 

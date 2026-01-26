@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
 import {AuthHeader} from "@/src/components/auth/AuthHeader";
 import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
-import {AppImagePicker} from "@/src/components/ui/AppImagePicker";
 import {AppBackButton} from "@/src/components/ui/AppBackButton";
 
 
 export default function SignUp() {
     const router = useRouter();
-    const [avatar, setAvatar] = useState<string | null>(null);
 
     return (
         <ScreenGradient className="px-6">
-
-
-                {
-                    /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
-                    коли відкривається клавіатура. Це критично для UX.
-                    */
-                }
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
@@ -35,22 +26,16 @@ export default function SignUp() {
                         <AppBackButton />
                     </View>
 
-                    {/* Перевикористовую компонент з header */}
+
+                    <View className="mt-40">
                     <AuthHeader
-                        title="Create Account"
-                        subtitle="Fill in your details below to join the Mindscape community."
+                        title="Welcome back!"
+                        subtitle="Please log in to your account"
                         isIcon={false}
                     />
-
-                    {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
+                        
+                        
                     <View className="gap-y-1">
-                        <AppImagePicker onImagePicked={(uri) => setAvatar(uri)} />
-
-                        <AppInput
-                            placeholder="Full Name"
-                            iconName="person-outline"
-                        />
-                        {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
                         <AppInput
                             placeholder="Email Address"
                             iconName="mail-outline"
@@ -62,30 +47,26 @@ export default function SignUp() {
                             iconName="lock-closed-outline"
                             isPassword={true}
                         />
-                        <AppInput
-                            placeholder="Confirm Password"
-                            iconName="lock-closed-outline"
-                            isPassword={true}
-                        />
                     </View>
 
-                    {/* Кнопка реєстрації */}
+
                     <View className="mt-6">
                         <AppButton
-                            title="Sign Up"
-                            onPress={() => console.log('Registering...')}
+                            title="Log in"
+                            onPress={() => console.log('Log in...')}
                         />
                     </View>
 
                     {/* Посилання на вхід, якщо вже є акаунт */}
                     <TouchableOpacity
                         className="mt-8 items-center"
-                        onPress={() => router.replace('/auth/log-in')}
+                        onPress={() => router.replace('/auth/sign-up')}
                     >
                         <Text className="text-slate-300 text-center px-10 leading-6 text-base">
-                            Already have an account? <Text className="text-[#f1a7a1] font-bold">Log In</Text>
+                            Don&#39;t have an account? <Text className="text-[#f1a7a1] font-bold">Sign up</Text>
                         </Text>
                     </TouchableOpacity>
+                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </ScreenGradient>
