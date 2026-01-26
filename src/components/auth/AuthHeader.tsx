@@ -3,17 +3,19 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Вбудовані іконки Expo
 
 interface AuthHeaderProps {
+    isIcon: boolean;
     title: string;
     subtitle?: string; // Опціональний підзаголовок
 }
 
-export const AuthHeader = ({ title, subtitle }: AuthHeaderProps) => {
+export const AuthHeader = ({ title, subtitle,isIcon }: AuthHeaderProps) => {
     return (
         <View className="items-center mt-10 mb-6">
-            {/* Іконка сонечка. Колір підберемо під персиковий відтінок референса */}
-            <View className="bg-white/10 p-4 rounded-full mb-6 border border-white/20">
-                <Ionicons name="sunny-outline" size={48} color="#f1a7a1" />
-            </View>
+            {isIcon && (
+                <View className="bg-white/10 p-4 rounded-full mb-6 border border-white/20">
+                    <Ionicons name="sunny-outline" size={48} color="#f1a7a1" />
+                </View>
+            )}
 
             {/* Заголовок */}
             <Text className="text-white text-3xl font-bold text-center px-4">

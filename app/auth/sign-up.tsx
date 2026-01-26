@@ -6,6 +6,8 @@ import {AuthHeader} from "@/src/components/auth/AuthHeader";
 import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
 import {AppImagePicker} from "@/src/components/ui/AppImagePicker";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {AppBackButton} from "@/src/components/ui/AppBackButton";
 
 
 export default function SignUp() {
@@ -14,11 +16,13 @@ export default function SignUp() {
 
     return (
         <ScreenGradient className="px-6">
-            {
-                /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
-                коли відкривається клавіатура. Це критично для UX.
-                */
-            }
+
+
+                {
+                    /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
+                    коли відкривається клавіатура. Це критично для UX.
+                    */
+                }
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
@@ -27,10 +31,16 @@ export default function SignUp() {
                     showsVerticalScrollIndicator={false}
                     contentContainerClassName="pb-10"
                 >
+
+                    <View className="items-start">
+                        <AppBackButton />
+                    </View>
+
                     {/* Перевикористовую компонент з header */}
                     <AuthHeader
                         title="Create Account"
                         subtitle="Fill in your details below to join the Mindscape community."
+                        isIcon={false}
                     />
 
                     {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
