@@ -35,6 +35,8 @@ export default function SignUp() {
                         <AppBackButton />
                     </View>
 
+
+                    <View className="mt-12">
                     {/* Перевикористовую компонент з header */}
                     <AuthHeader
                         title="Create Account"
@@ -86,6 +88,8 @@ export default function SignUp() {
                             Already have an account? <Text className="text-[#f1a7a1] font-bold">Log In</Text>
                         </Text>
                     </TouchableOpacity>
+
+                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </ScreenGradient>

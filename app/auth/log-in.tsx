@@ -6,6 +6,7 @@ import {AuthHeader} from "@/src/components/auth/AuthHeader";
 import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
 import {AppBackButton} from "@/src/components/ui/AppBackButton";
+import {SocialButton} from "@/src/components/auth/SocialAuthButton";
 
 
 export default function SignUp() {
@@ -27,7 +28,7 @@ export default function SignUp() {
                     </View>
 
 
-                    <View className="mt-40">
+                    <View className="mt-28">
                     <AuthHeader
                         title="Welcome back!"
                         subtitle="Please log in to your account"
@@ -57,9 +58,21 @@ export default function SignUp() {
                         />
                     </View>
 
+                        <View className="mt-8">
+                            <View className="flex-row items-center mb-6">
+                                <View className="flex-1 h-[1px] bg-white/10" />
+                                <Text className="mx-4 text-white/30 text-xs">OR</Text>
+                                <View className="flex-1 h-[1px] bg-white/10" />
+                            </View>
+
+                            <SocialButton type="google" onPress={() => console.log('Google login')} />
+                            <SocialButton type="apple" onPress={() => console.log('Apple login')} />
+                        </View>
+
+
                     {/* Посилання на вхід, якщо вже є акаунт */}
                     <TouchableOpacity
-                        className="mt-8 items-center"
+                        className="mt-6 items-center"
                         onPress={() => router.replace('/auth/sign-up')}
                     >
                         <Text className="text-slate-300 text-center px-10 leading-6 text-base">
