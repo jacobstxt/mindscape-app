@@ -9,7 +9,7 @@ interface AuthHeaderProps {
 
 export const AuthHeader = ({ title, subtitle }: AuthHeaderProps) => {
     return (
-        <View className="items-center mt-10 mb-12">
+        <View className="items-center mt-10 mb-6">
             {/* Іконка сонечка. Колір підберемо під персиковий відтінок референса */}
             <View className="bg-white/10 p-4 rounded-full mb-6 border border-white/20">
                 <Ionicons name="sunny-outline" size={48} color="#f1a7a1" />

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
 import {AuthHeader} from "@/src/components/auth/AuthHeader";
 import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
+import {AppImagePicker} from "@/src/components/ui/AppImagePicker";
 
 
 export default function SignUp() {
     const router = useRouter();
+    const [avatar, setAvatar] = useState<string | null>(null);
 
     return (
         <ScreenGradient className="px-6">
@@ -31,8 +33,10 @@ export default function SignUp() {
                         subtitle="Fill in your details below to join the Mindscape community."
                     />
 
-                    {/* Контейнер для полів введення. Використовую компонент AppInput */}
+                    {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
                     <View className="gap-y-1">
+                        <AppImagePicker onImagePicked={(uri) => setAvatar(uri)} />
+
                         <AppInput
                             placeholder="Full Name"
                             iconName="person-outline"
