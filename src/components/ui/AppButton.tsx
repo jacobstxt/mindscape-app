@@ -14,13 +14,17 @@ export const AppButton = ({ title, variant = 'primary', className, ...props }: A
     // Базові стилі для всіх кнопок
     const containerStyle = `py-4 px-12 rounded-xl items-center justify-center border ${
         isPrimary
-            ? 'bg-[#f1a7a1] border-[#f1a7a1]' // Залитий варіант кнопки
-            : 'bg-white/10 border-white/40'   // Напівпрозорий варіант кнопки
+            ? 'bg-blue-500 border-blue-600 dark:bg-blue-400 dark:border-blue-500' 
+            : 'bg-blue-100/50 border-blue-300 dark:bg-white/10 dark:border-white/20'  
     } ${className || ''}`;
 
 
-    //Стиль для тексту
-    const textStyle = `text-xl font-bold text-white `
+
+    const textStyle = `text-xl font-bold ${
+        isPrimary
+            ? 'text-white'
+            : 'text-blue-500 dark:text-white'
+    }`;
 
 
     return (

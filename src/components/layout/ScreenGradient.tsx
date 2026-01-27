@@ -1,6 +1,7 @@
 import {SafeAreaView,SafeAreaViewProps} from "react-native-safe-area-context";
 import { LinearGradient } from 'expo-linear-gradient';
 import React from "react";
+import {useColorScheme} from "nativewind";
 
 
 interface ScreenGradientProps extends SafeAreaViewProps {
@@ -8,16 +9,18 @@ interface ScreenGradientProps extends SafeAreaViewProps {
 }
 
 export const ScreenGradient = ({ children, className, ...props }: ScreenGradientProps) => {
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+
+    const darkColors = ['#020617', '#0f172a', '#1e3a8a'] as const;
+    const lightColors = ['#f8fafc', '#e0f2fe', '#bae6fd'] as const;
+
     return (
         // LinearGradient має бути зовнішнім контейнером і займати весь простір
         <LinearGradient
-            // Кольори градієнта (від темного верху до світлого низу)
-            colors={['#2c5364', '#203a43', '#f1a7a1']}
-            // Напрямок градієнта: від верхнього лівого (0,0) до нижнього правого (1,1)
+            colors={isDark ? darkColors : lightColors}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
-            // Важливо: NativeWind іноді погано працює прямим стилем на LinearGradient,
-            // тому flex: 1 задаємо через звичайний style
             style={{ flex: 1 }}
         >
             {/*
