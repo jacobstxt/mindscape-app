@@ -28,7 +28,7 @@ export default function SignUp() {
                     </View>
 
 
-                    <View className="mt-28">
+                    <View className="mt-24">
                     <AuthHeader
                         title="Welcome back!"
                         subtitle="Please log in to your account"
@@ -60,9 +60,13 @@ export default function SignUp() {
 
                         <View className="mt-8">
                             <View className="flex-row items-center mb-6">
-                                <View className="flex-1 h-[1px] bg-white/10" />
-                                <Text className="mx-4 text-white/30 text-xs">OR</Text>
-                                <View className="flex-1 h-[1px] bg-white/10" />
+                                <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
+
+                                <Text className="mx-4 text-blue-900/40 dark:text-white/30 text-xs font-bold uppercase tracking-widest">
+                                    OR
+                                </Text>
+
+                                <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
                             </View>
 
                             <SocialButton type="google" onPress={() => console.log('Google login')} />
@@ -70,15 +74,19 @@ export default function SignUp() {
                         </View>
 
 
-                    {/* Посилання на вхід, якщо вже є акаунт */}
-                    <TouchableOpacity
-                        className="mt-6 items-center"
-                        onPress={() => router.replace('/auth/sign-up')}
-                    >
-                        <Text className="text-slate-300 text-center px-10 leading-6 text-base">
-                            Don&#39;t have an account? <Text className="text-[#f1a7a1] font-bold">Sign up</Text>
-                        </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            className="mt-6 items-center"
+                            activeOpacity={0.7}
+                            onPress={() => router.replace('/auth/sign-up')}
+                        >
+                            <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
+                                Don&#39;t have an account?{' '}
+                                <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
+                                    Sign up
+                                </Text>
+                            </Text>
+                        </TouchableOpacity>
+
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>

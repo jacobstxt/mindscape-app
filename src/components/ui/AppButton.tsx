@@ -14,7 +14,7 @@ export const AppButton = ({ title, variant = 'primary', className, ...props }: A
     // Базові стилі для всіх кнопок
     const containerStyle = `py-4 px-12 rounded-xl items-center justify-center border ${
         isPrimary
-            ? 'bg-blue-500 border-blue-600 dark:bg-blue-400 dark:border-blue-500' 
+            ? 'bg-[#1e3a8a] border-blue-600 dark:bg-blue-400 dark:border-blue-500' 
             : 'bg-blue-100/50 border-blue-300 dark:bg-white/10 dark:border-white/20'  
     } ${className || ''}`;
 
@@ -23,7 +23,7 @@ export const AppButton = ({ title, variant = 'primary', className, ...props }: A
     const textStyle = `text-xl font-bold ${
         isPrimary
             ? 'text-white'
-            : 'text-blue-500 dark:text-white'
+            : 'text-[#1e3a8a] dark:text-white'
     }`;
 
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import { useColorScheme } from 'nativewind';
 
 
 /*Current Image тут на майбутнє для сторінки зміни профілю наприклад*/
@@ -12,6 +13,8 @@ interface AppImagePickerProps {
 
 export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerProps) => {
     const [image, setImage] = useState<string | null>(currentImage || null);
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
 
     const handlePress = () => {
         // Меню вибору
@@ -59,14 +62,18 @@ export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerPr
         <View className="items-center my-4">
             <TouchableOpacity
                 onPress={handlePress}
-                className="w-28 h-28 rounded-full bg-white/10 border-2 border-dashed border-white/30 items-center justify-center overflow-hidden"
+                className={`
+                    w-28 h-28 rounded-full border-2 border-dashed items-center justify-center overflow-hidden
+                    bg-blue-50/50 border-[#1e3a8a] 
+                    dark:bg-white/10 dark:border-white/20
+                `}
             >
                 {image ? (
                     <Image source={{ uri: image }} className="w-full h-full" />
                 ) : (
                     <View className="items-center">
-                        <Ionicons name="camera-outline" size={32} color="rgba(255,255,255,0.4)" />
-                        <Text className="text-white/40 text-[10px] mt-1">UPLOAD</Text>
+                        <Ionicons name="camera-outline" size={32} color={isDark ? "rgba(255,255,255,0.4)" : "#1e3a8a"} />
+                        <Text className="text-blue-900/60 dark:text-white/40 text-[10px] font-bold mt-1 uppercase tracking-tighter">UPLOAD</Text>
                     </View>
                 )}
             </TouchableOpacity>

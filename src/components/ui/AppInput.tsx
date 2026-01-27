@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {useColorScheme} from "nativewind";
 
 
 //Через пропси передаю іконку і чи пароль це
@@ -11,20 +12,36 @@ interface AppInputProps extends TextInputProps {
 
 export const AppInput = ({ iconName, isPassword, className, ...props }: AppInputProps) => {
     const [isSecure, setIsSecure] = useState(isPassword);
+    const { colorScheme } = useColorScheme();
+    const isDark = colorScheme === 'dark';
+
+    const placeholderColor = isDark
+        ? "rgba(255, 255, 255, 0.4)"
+        : "rgba(30, 58, 138, 0.4)";
+
+    const passwordEyeColor = isDark
+        ? "#94a3b8"
+        : "#1e3a8a";
 
     return (
-        <View className={`w-full bg-white/10 border border-white/20 rounded-2xl flex-row items-center px-4 mb-4 ${className}`}>
-            {/* Іконка зліва */}
+        <View className={
+            `w-full h-16 flex-row items-center px-4 rounded-2xl border mb-4
+            /* Світла тема: напівпрозорий білий з блакитним відтінком */
+            bg-white/60 border-blue-100 
+            /* Темна тема: класичне скло */
+            dark:bg-white/10 dark:border-white/20 
+            ${className}`
+        }>
             {iconName && (
-                <Ionicons name={iconName} size={22} color="rgba(255, 255, 255, 0.6)" className="mr-3" />
+                <Ionicons name={iconName} size={22} color={isDark ? "white" : "#1e3a8a"} className="mr-3" />
             )}
 
             {/* Поле введення */}
             <TextInput
                 {...props}
                 secureTextEntry={isSecure}
-                placeholderTextColor="rgba(255, 255, 255, 0.4)"
-                className="flex-1 py-4 text-white text-base"
+                placeholderTextColor={placeholderColor}
+                className="flex-1 py-4 text-slate-900 dark:text-white text-base"
             />
 
             {/* Кнопка "ока" для пароля */}
@@ -33,7 +50,7 @@ export const AppInput = ({ iconName, isPassword, className, ...props }: AppInput
                     <Ionicons
                         name={isSecure ? "eye-off-outline" : "eye-outline"}
                         size={22}
-                        color="rgba(255, 255, 255, 0.6)"
+                        color={passwordEyeColor}
                     />
                 </TouchableOpacity>
             )}

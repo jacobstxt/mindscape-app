@@ -15,11 +15,11 @@ export default function SignUp() {
 
     return (
         <ScreenGradient className="px-6">
-                {
-                    /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
-                    коли відкривається клавіатура. Це критично для UX.
-                    */
-                }
+            {
+                /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
+                коли відкривається клавіатура. Це критично для UX.
+                */
+            }
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
@@ -34,7 +34,7 @@ export default function SignUp() {
                     </View>
 
 
-                    <View className="mt-8">
+                    <View>
                     {/* Перевикористовую компонент з header */}
                     <AuthHeader
                         title="Create Account"
@@ -77,15 +77,18 @@ export default function SignUp() {
                         />
                     </View>
 
-                    {/* Посилання на вхід, якщо вже є акаунт */}
-                    <TouchableOpacity
-                        className="mt-8 items-center"
-                        onPress={() => router.replace('/auth/log-in')}
-                    >
-                        <Text className="text-slate-300 text-center px-10 leading-6 text-base">
-                            Already have an account? <Text className="text-[#f1a7a1] font-bold">Log In</Text>
-                        </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            className="mt-6 items-center"
+                            activeOpacity={0.7}
+                            onPress={() => router.replace('/auth/log-in')}
+                        >
+                            <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
+                                Already have an account?{' '}
+                                <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
+                                    Log in
+                                </Text>
+                            </Text>
+                        </TouchableOpacity>
 
                     </View>
                 </ScrollView>
