@@ -1,6 +1,5 @@
 import { View } from "react-native";
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
-import {StatusBar} from "expo-status-bar";
 import {AuthHeader} from "@/src/components/auth/AuthHeader";
 import {AppButton} from "@/src/components/ui/AppButton";
 import {useRouter} from "expo-router";
@@ -10,9 +9,6 @@ export default function Index() {
 
   return (
       <ScreenGradient className="p-6 start items-center">
-
-          {/*робить усі системні індикатори білими */}
-          <StatusBar style="light" />
 
           <View className="flex-1 justify-between py-10">
 

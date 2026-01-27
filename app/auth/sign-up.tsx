@@ -15,8 +15,6 @@ export default function SignUp() {
 
     return (
         <ScreenGradient className="px-6">
-
-
                 {
                     /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
                     коли відкривається клавіатура. Це критично для UX.
@@ -36,7 +34,7 @@ export default function SignUp() {
                     </View>
 
 
-                    <View className="mt-12">
+                    <View className="mt-8">
                     {/* Перевикористовую компонент з header */}
                     <AuthHeader
                         title="Create Account"
