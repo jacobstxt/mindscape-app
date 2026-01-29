@@ -4,11 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {BlurView} from "expo-blur";
 import { useColorScheme } from "nativewind";
+import {useAppSelector} from "@/src/store";
 
 
 export default function HomeScreen() {
+    const { user } = useAppSelector((state) => state.auth);
+
     const insets = useSafeAreaInsets();
-    const userName = "Максим";
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
 
@@ -48,7 +50,7 @@ export default function HomeScreen() {
                         Вітаємо,
                     </Text>
                     <Text className="text-slate-900 dark:text-white text-3xl font-bold">
-                        {userName} 👋
+                        {user?.firstName} 👋
                     </Text>
                 </View>
                 <TouchableOpacity className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full items-center justify-center border border-blue-200 dark:border-blue-700">
@@ -59,7 +61,6 @@ export default function HomeScreen() {
 
             <View className="px-6 mb-8">
                 <View className="bg-[#1e3a8a] dark:bg-indigo-600 rounded-[30px] p-6 shadow-xl shadow-blue-500/50 relative overflow-hidden">
-                    {/* Декоративне коло на фоні картки */}
                     <View className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full" />
 
                     <Text className="text-white/80 text-lg font-medium mb-1">Твій Mindscape</Text>

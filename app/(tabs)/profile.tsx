@@ -1,10 +1,11 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import {useAppDispatch} from "@/src/store";
+import {useAppDispatch, useAppSelector} from "@/src/store";
 import {logout} from "@/src/store/authSlice";
 import {Ionicons} from "@expo/vector-icons";
 
 export default function ProfileScreen() {
     const dispatch = useAppDispatch();
+    const { user } = useAppSelector((state) => state.auth);
 
 
     const handleLogout = () => {
@@ -12,12 +13,24 @@ export default function ProfileScreen() {
     };
 
     return (
-        <View className="flex-1 items-center justify-center bg-slate-50 dark:bg-[#0F172A]">
-            <Text className="text-2xl font-bold dark:text-white text-center">
-                Сторінка профілю Mindscape
-            </Text>
+        <View className="flex-1 bg-slate-50 dark:bg-[#0F172A] px-6 pt-20">
 
-            <View className="mt-auto pb-10">
+            <View className="items-center mb-10">
+                <View className="w-24 h-24 bg-blue-500 rounded-full items-center justify-center mb-4 shadow-xl">
+                    <Text className="text-white text-3xl font-bold">
+                        {user?.firstName?.[0]}{user?.lastName?.[0]}
+                    </Text>
+                </View>
+
+                <Text className="text-2xl font-bold text-slate-900 dark:text-white">
+                    {user?.firstName} {user?.lastName}
+                </Text>
+                <Text className="text-slate-500 dark:text-blue-300/60 text-base">
+                    {user?.email}
+                </Text>
+            </View>
+
+            <View className="pb-10">
                 <TouchableOpacity
                     onPress={handleLogout}
                     activeOpacity={0.7}
