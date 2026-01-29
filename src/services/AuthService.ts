@@ -7,7 +7,7 @@ import {IRegister} from "@/src/types/auth/IRegister";
 
 export const authService = createApi({
     reducerPath: 'api/account',
-    baseQuery: createBaseQuery('Account'),
+    baseQuery: createBaseQuery('Auth'),
     tagTypes: ['Account', 'AccountPassword'],
     endpoints: (builder) => ({
         login: builder.mutation<IAuthResponse, ILogin>({
@@ -19,7 +19,7 @@ export const authService = createApi({
         }),
 
 
-        register: builder.mutation<IAuthResponse, IRegister>({
+        /*register: builder.mutation<IAuthResponse, IRegister>({
             query: (credentials) => {
                 const formData =  null; //serialize(credentials);
 
@@ -29,12 +29,12 @@ export const authService = createApi({
                     body: formData
                 };
             }
-        })
+        })*/
 
     })
 });
 
 export const {
     useLoginMutation,
-    useRegisterMutation
+    //useRegisterMutation
 } = authService;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
 import {AuthHeader} from "@/src/components/auth/AuthHeader";
@@ -7,10 +7,38 @@ import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
 import {AppBackButton} from "@/src/components/ui/AppBackButton";
 import {SocialButton} from "@/src/components/auth/SocialAuthButton";
+import {useLoginMutation} from "@/src/services/AuthService";
+import {loginSuccess} from "@/src/store/authSlice";
+import {useAppDispatch} from "@/src/store";
+import {BASE_URL} from "@/src/constants/Urls";
 
 
-export default function SignUp() {
+
+export default function LogIn() {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [login, {isLoading, error}] = useLoginMutation();
+
+
+    const handleLogin = async () => {
+        if (!email || !password) {
+            Alert.alert("Помилка", "Будь ласка, заповніть всі поля");
+            return;
+        }
+
+        console.log("Base URL:", BASE_URL);
+        console.log("Attempting login with:", { email, password });
+
+        try {
+            const result = await login({ email, password }).unwrap();
+            dispatch(loginSuccess(result.token));
+        } catch (err) {
+            console.error("Login failed", err);
+            Alert.alert("Помилка входу", "Невірний логін або пароль");
+        }
+    };
 
     return (
         <ScreenGradient className="px-6">
@@ -41,11 +69,15 @@ export default function SignUp() {
                             placeholder="Email Address"
                             iconName="mail-outline"
                             keyboardType="email-address"
+                            value={email}
+                            onChangeText={setEmail}
                             autoCapitalize="none"
                         />
                         <AppInput
                             placeholder="Password"
                             iconName="lock-closed-outline"
+                            value={password}
+                            onChangeText={setPassword}
                             isPassword={true}
                         />
                     </View>
@@ -53,8 +85,9 @@ export default function SignUp() {
 
                     <View className="mt-6">
                         <AppButton
-                            title="Log in"
-                            onPress={() => console.log('Log in...')}
+                            title={isLoading ? "Loading..." : "Log in"}
+                            onPress={handleLogin}
+                            disabled={isLoading}
                         />
                     </View>
 
