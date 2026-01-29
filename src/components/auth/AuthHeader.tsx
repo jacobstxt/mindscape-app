@@ -1,4 +1,4 @@
-// src/components/auth/AuthHeader.tsx
+// src/components/(auth)/AuthHeader.tsx
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Вбудовані іконки Expo
 import {useColorScheme} from "nativewind";

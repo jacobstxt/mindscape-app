@@ -8,7 +8,6 @@ export function useSystemBars() {
 
     useEffect(() => {
         if (Platform.OS === "android") {
-            NavigationBar.setBackgroundColorAsync(isDark ? "#09090b" : "#fafafa");
             NavigationBar.setButtonStyleAsync(isDark ? "light" : "dark");
         }
     }, [isDark]);

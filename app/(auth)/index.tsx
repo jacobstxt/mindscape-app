@@ -25,13 +25,13 @@ export default function Index() {
                   <AppButton
                       title="Sign Up"
                       variant="primary"
-                      onPress={() => router.push('/auth/sign-up')}
+                      onPress={() => router.push('/sign-up')}
                   />
 
                   <AppButton
                       title="Log In"
                       variant="outline"
-                      onPress={() => router.push('/auth/log-in')}
+                      onPress={() => router.push('/log-in')}
                   />
               </View>
 

@@ -77,7 +77,7 @@ export default function SignUp() {
                         <TouchableOpacity
                             className="mt-6 items-center"
                             activeOpacity={0.7}
-                            onPress={() => router.replace('/auth/sign-up')}
+                            onPress={() => router.replace('/sign-up')}
                         >
                             <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
                                 Don&#39;t have an account?{' '}
