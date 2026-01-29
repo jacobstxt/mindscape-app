@@ -26,7 +26,6 @@ export const AppInput = ({ iconName, isPassword, className, ...props }: AppInput
     return (
         <View className={
             `w-full h-16 flex-row items-center px-4 rounded-2xl border mb-4
-            /* Світла тема: напівпрозорий білий з блакитним відтінком */
             bg-white/60 border-blue-100 
             /* Темна тема: класичне скло */
             dark:bg-white/10 dark:border-white/20 
@@ -41,7 +40,7 @@ export const AppInput = ({ iconName, isPassword, className, ...props }: AppInput
                 {...props}
                 secureTextEntry={isSecure}
                 placeholderTextColor={placeholderColor}
-                className="flex-1 py-4 text-slate-900 dark:text-white text-base"
+                className="flex-1  text-slate-900 dark:text-white text-lg"
             />
 
             {/* Кнопка "ока" для пароля */}

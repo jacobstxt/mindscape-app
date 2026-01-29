@@ -3,6 +3,7 @@ import {createBaseQuery} from "@/src/utils/CreateBaseQuery";
 import {IAuthResponse} from "@/src/types/auth/IAuthResponse";
 import {ILogin} from "@/src/types/auth/ILogin";
 import {IRegister} from "@/src/types/auth/IRegister";
+import {serialize} from "object-to-formdata";
 
 
 export const authService = createApi({
@@ -20,8 +21,7 @@ export const authService = createApi({
 
         register: builder.mutation<IAuthResponse, IRegister>({
             query: (credentials) => {
-                const formData =  null; //serialize(credentials);
-
+                const formData = serialize(credentials);
                 return {
                     url: 'register',
                     method: 'POST',
@@ -34,5 +34,5 @@ export const authService = createApi({
 
 export const {
     useLoginMutation,
-    //useRegisterMutation
+    useRegisterMutation
 } = authService;

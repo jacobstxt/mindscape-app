@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import {View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
 import {AuthHeader} from "@/src/components/auth/AuthHeader";
@@ -7,11 +7,35 @@ import {AppInput} from "@/src/components/ui/AppInput";
 import {AppButton} from "@/src/components/ui/AppButton";
 import {AppImagePicker} from "@/src/components/ui/AppImagePicker";
 import {AppBackButton} from "@/src/components/ui/AppBackButton";
+import {useRegisterMutation} from "@/src/services/AuthService";
+import {loginSuccess} from "@/src/store/authSlice";
+import {useAppDispatch} from "@/src/store";
+import {useForm} from "@/src/hooks/UseForm";
+import {IRegister} from "@/src/types/auth/IRegister";
 
 
 export default function SignUp() {
     const router = useRouter();
-    const [avatar, setAvatar] = useState<string | null>(null);
+    const dispatch = useAppDispatch();
+    const [register, {isLoading, error}] = useRegisterMutation();
+
+    const { form, setForm } = useForm<IRegister>({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        imageFile: undefined,
+    });
+
+    const handleRegister = async () => {
+        try {
+            const result = await register(form).unwrap();
+            dispatch(loginSuccess(result.token));
+        } catch (err) {
+            console.error("Register failed", err);
+            Alert.alert("Помилка входу", "Невірний логін або пароль");
+        }
+    };
 
     return (
         <ScreenGradient className="px-6">
@@ -44,11 +68,30 @@ export default function SignUp() {
 
                     {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
                     <View className="gap-y-1">
-                        <AppImagePicker onImagePicked={(uri) => setAvatar(uri)} />
+
+                        <AppImagePicker
+                            onImagePicked={(uri) => setForm({
+                                ...form,
+                                imageFile: {
+                                    uri: uri,
+                                    name: 'avatar.jpg',
+                                    type: 'image/jpeg'
+                                }
+                            })}
+                        />
 
                         <AppInput
-                            placeholder="Full Name"
+                            placeholder="First Name"
                             iconName="person-outline"
+                            value={form.firstName}
+                            onChangeText={(text) => setForm({...form, firstName: text})}
+                        />
+
+                        <AppInput
+                            placeholder="Last Name"
+                            iconName="person-outline"
+                            value={form.lastName}
+                            onChangeText={(text) => setForm({...form, lastName: text})}
                         />
                         {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
                         <AppInput
@@ -56,24 +99,24 @@ export default function SignUp() {
                             iconName="mail-outline"
                             keyboardType="email-address"
                             autoCapitalize="none"
+                            value={form.email}
+                            onChangeText={(text) => setForm({...form, email: text})}
                         />
                         <AppInput
                             placeholder="Password"
                             iconName="lock-closed-outline"
                             isPassword={true}
-                        />
-                        <AppInput
-                            placeholder="Confirm Password"
-                            iconName="lock-closed-outline"
-                            isPassword={true}
+                            value={form.password}
+                            onChangeText={(text) => setForm({...form, password: text})}
                         />
                     </View>
 
                     {/* Кнопка реєстрації */}
                     <View className="mt-6">
                         <AppButton
-                            title="Sign Up"
-                            onPress={() => console.log('Registering...')}
+                            title={isLoading ? "Loading..." : "Sign up"}
+                            onPress={handleRegister}
+                            disabled={isLoading}
                         />
                     </View>
 

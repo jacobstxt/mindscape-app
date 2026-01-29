@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
@@ -11,28 +11,27 @@ import {useLoginMutation} from "@/src/services/AuthService";
 import {loginSuccess} from "@/src/store/authSlice";
 import {useAppDispatch} from "@/src/store";
 import {BASE_URL} from "@/src/constants/Urls";
-
+import {useForm} from "@/src/hooks/UseForm";
+import {ILogin} from "@/src/types/auth/ILogin";
 
 
 export default function LogIn() {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [login, {isLoading, error}] = useLoginMutation();
+
+    const { form, setForm } = useForm<ILogin>({
+        email: "",
+        password: "",
+    });
 
 
     const handleLogin = async () => {
-        if (!email || !password) {
-            Alert.alert("Помилка", "Будь ласка, заповніть всі поля");
-            return;
-        }
-
         console.log("Base URL:", BASE_URL);
-        console.log("Attempting login with:", { email, password });
+        console.log("Attempting login with:", {form});
 
         try {
-            const result = await login({ email, password }).unwrap();
+            const result = await login(form).unwrap();
             dispatch(loginSuccess(result.token));
         } catch (err) {
             console.error("Login failed", err);
@@ -69,15 +68,15 @@ export default function LogIn() {
                             placeholder="Email Address"
                             iconName="mail-outline"
                             keyboardType="email-address"
-                            value={email}
-                            onChangeText={setEmail}
+                            value={form.email}
+                            onChangeText={(text) => setForm({...form, email: text})}
                             autoCapitalize="none"
                         />
                         <AppInput
                             placeholder="Password"
                             iconName="lock-closed-outline"
-                            value={password}
-                            onChangeText={setPassword}
+                            value={form.password}
+                            onChangeText={(text) => setForm({...form, password: text})}
                             isPassword={true}
                         />
                     </View>

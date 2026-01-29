@@ -1,11 +1,16 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {Image,View, Text, TouchableOpacity} from 'react-native';
 import {useAppDispatch, useAppSelector} from "@/src/store";
 import {logout} from "@/src/store/authSlice";
 import {Ionicons} from "@expo/vector-icons";
+import {APP_ENV} from "@/src/constants/Urls";
 
 export default function ProfileScreen() {
     const dispatch = useAppDispatch();
     const { user } = useAppSelector((state) => state.auth);
+
+    const userImageUrl = user?.image
+        ? `${APP_ENV.IMAGES_200_URL}${user.image}`
+        : null;
 
 
     const handleLogout = () => {
@@ -16,10 +21,21 @@ export default function ProfileScreen() {
         <View className="flex-1 bg-slate-50 dark:bg-[#0F172A] px-6 pt-20">
 
             <View className="items-center mb-10">
-                <View className="w-24 h-24 bg-blue-500 rounded-full items-center justify-center mb-4 shadow-xl">
-                    <Text className="text-white text-3xl font-bold">
-                        {user?.firstName?.[0]}{user?.lastName?.[0]}
-                    </Text>
+                <View className="w-28 h-28 rounded-full border-2 border-dashed items-center
+                justify-center overflow-hidden
+                bg-blue-50/50 border-[#1e3a8a]
+                dark:bg-white/10 dark:border-white/20">
+                    {userImageUrl ? (
+                        <Image
+                            source={{ uri: userImageUrl }}
+                            className="w-full h-full"
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <Text className="text-white text-3xl font-bold uppercase">
+                            {user?.firstName?.[0]}{user?.lastName?.[0]}
+                        </Text>
+                    )}
                 </View>
 
                 <Text className="text-2xl font-bold text-slate-900 dark:text-white">
