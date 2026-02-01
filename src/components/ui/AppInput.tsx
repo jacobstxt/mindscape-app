@@ -40,6 +40,11 @@ export const AppInput = ({ iconName, isPassword, className, ...props }: AppInput
                 {...props}
                 secureTextEntry={isSecure}
                 placeholderTextColor={placeholderColor}
+                style={{
+                    paddingVertical: 0,          // Прибираємо внутрішні відступи Android
+                    textAlignVertical: 'center', // Примусове вертикальне центрування
+                    includeFontPadding: false,   // Вимикає системний простір навколо шрифту
+                }}
                 className="flex-1  text-slate-900 dark:text-white text-lg"
             />
 

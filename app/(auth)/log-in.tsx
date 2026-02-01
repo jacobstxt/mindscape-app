@@ -43,7 +43,6 @@ export default function LogIn() {
         <ScreenGradient className="px-6">
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                className="flex-1"
             >
                 <ScrollView
                     showsVerticalScrollIndicator={false}
