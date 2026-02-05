@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {View, Text, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import { useRouter } from 'expo-router';
 import {ScreenGradient} from "@/src/components/layout/ScreenGradient";
@@ -80,19 +80,26 @@ export default function SignUp() {
                             })}
                         />
 
-                        <AppInput
-                            placeholder="First Name"
-                            iconName="person-outline"
-                            value={form.firstName}
-                            onChangeText={(text) => setForm({...form, firstName: text})}
-                        />
+                        <View className="flex-row gap-x-3">
 
-                        <AppInput
-                            placeholder="Last Name"
-                            iconName="person-outline"
-                            value={form.lastName}
-                            onChangeText={(text) => setForm({...form, lastName: text})}
-                        />
+                            <AppInput
+                                className="flex-1"
+                                placeholder="First Name"
+                                iconName="person-outline"
+                                value={form.firstName}
+                                onChangeText={(text) => setForm({...form, firstName: text})}
+                            />
+
+                            <AppInput
+                                className="flex-1"
+                                placeholder="Last Name"
+                                iconName="person-outline"
+                                value={form.lastName}
+                                onChangeText={(text) => setForm({...form, lastName: text})}
+                            />
+
+                        </View>
+
                         {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
                         <AppInput
                             placeholder="Email Address"

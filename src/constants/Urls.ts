@@ -1,4 +1,5 @@
-export const BASE_URL = "http://192.168.1.103:3589";
+/*export const BASE_URL = "http://192.168.1.103:3589";*/
+export const BASE_URL = "https://max.itstep.click";
 
 const  APP_IMAGE_URL = BASE_URL + '/images';
 
