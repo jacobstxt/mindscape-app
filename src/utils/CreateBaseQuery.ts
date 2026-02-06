@@ -3,5 +3,5 @@ import {BASE_URL} from "@/src/constants/Urls";
 
 export const createBaseQuery = (endpoint: string) =>
     fetchBaseQuery({
-        baseUrl: `${BASE_URL}/${endpoint}/`,
+        baseUrl: `${BASE_URL}/api/${endpoint}/`,
     });

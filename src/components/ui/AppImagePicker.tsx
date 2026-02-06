@@ -9,9 +9,10 @@ import { useColorScheme } from 'nativewind';
 interface AppImagePickerProps {
     onImagePicked: (uri: string) => void; // Функція-коллбек для передачі фото батьківському компоненту
     currentImage?: string | null;
+    error?: any;
 }
 
-export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerProps) => {
+export const AppImagePicker = ({ onImagePicked, currentImage,error }: AppImagePickerProps) => {
     const [image, setImage] = useState<string | null>(currentImage || null);
     const { colorScheme } = useColorScheme();
     const isDark = colorScheme === 'dark';
@@ -57,6 +58,7 @@ export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerPr
         }
     };
 
+    const errorMessage = typeof error === 'string' ? error : error?.message;
 
     return (
         <View className="items-center my-4">
@@ -65,7 +67,7 @@ export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerPr
                 className={`
                     w-28 h-28 rounded-full border-2 border-dashed items-center justify-center overflow-hidden
                     bg-blue-50/50 border-[#1e3a8a] 
-                    dark:bg-white/10 dark:border-white/20
+                    dark:bg-white/10 dark:border-white/20 ${errorMessage ? 'border-2 border-red-500' : ''}\`
                 `}
             >
                 {image ? (
@@ -77,6 +79,12 @@ export const AppImagePicker = ({ onImagePicked, currentImage }: AppImagePickerPr
                     </View>
                 )}
             </TouchableOpacity>
+
+            {errorMessage && (
+                <Text className="text-red-500 text-sm mt-1 ml-2">
+                    {errorMessage}
+                </Text>
+            )}
         </View>
     );
 };

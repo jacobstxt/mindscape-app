@@ -10,24 +10,44 @@ import {AppBackButton} from "@/src/components/ui/AppBackButton";
 import {useRegisterMutation} from "@/src/services/AuthService";
 import {loginSuccess} from "@/src/store/authSlice";
 import {useAppDispatch} from "@/src/store";
-import {useForm} from "@/src/hooks/UseForm";
-import {IRegister} from "@/src/types/auth/IRegister";
+
+
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, RegisterFormData } from "@/src/validation/authSchema"; // шлях до схеми
 
 
 export default function SignUp() {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [register, {isLoading, error}] = useRegisterMutation();
+    const [register, {isLoading}] = useRegisterMutation();
 
-    const { form, setForm } = useForm<IRegister>({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        imageFile: undefined,
+    const {control, handleSubmit, formState: { errors }} = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            imageFile: undefined,
+        }
     });
 
-    const handleRegister = async () => {
+    const onValidSubmit = async (data: RegisterFormData) => {
+        console.log("Attempting register with:", {data});
+        try {
+            const result = await register(data).unwrap();
+            dispatch(loginSuccess(result.token));
+        } catch (err: any) {
+            console.error("Register failed", err);
+            // Виводимо помилку, яку ми налаштували в AuthController на бекенді
+            Alert.alert("Помилка реєстрації", err.data?.Errors?.Email || "Щось пішло не так");
+        }
+    };
+
+
+
+    /*const handleRegister = async () => {
         try {
             const result = await register(form).unwrap();
             dispatch(loginSuccess(result.token));
@@ -35,7 +55,7 @@ export default function SignUp() {
             console.error("Register failed", err);
             Alert.alert("Помилка входу", "Невірний логін або пароль");
         }
-    };
+    };*/
 
     return (
         <ScreenGradient className="px-6">
@@ -69,52 +89,78 @@ export default function SignUp() {
                     {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
                     <View className="gap-y-1">
 
-                        <AppImagePicker
-                            onImagePicked={(uri) => setForm({
-                                ...form,
-                                imageFile: {
-                                    uri: uri,
-                                    name: 'avatar.jpg',
-                                    type: 'image/jpeg'
-                                }
-                            })}
+                        <Controller control={control} name={"imageFile"}
+                                    render={({ field: { onChange } }) => (
+                                        <AppImagePicker
+                                            onImagePicked={(uri) => onChange({
+                                                uri, name: 'avatar.jpg', type: 'image/jpeg'
+                                            })}
+                                            error={errors.imageFile?.message}
+                                        />
+                                    )}
                         />
 
-                        <View className="flex-row gap-x-3">
 
-                            <AppInput
-                                className="flex-1"
-                                placeholder="First Name"
-                                iconName="person-outline"
-                                value={form.firstName}
-                                onChangeText={(text) => setForm({...form, firstName: text})}
+                        <View className="flex-row items-start gap-x-3">
+
+                            <Controller
+                                control={control}
+                                name="firstName"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        className="flex-1"
+                                        placeholder="First Name"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.firstName?.message}
+                                    />
+                                )}
                             />
 
-                            <AppInput
-                                className="flex-1"
-                                placeholder="Last Name"
-                                iconName="person-outline"
-                                value={form.lastName}
-                                onChangeText={(text) => setForm({...form, lastName: text})}
+                            <Controller
+                                control={control}
+                                name="lastName"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        className="flex-1"
+                                        placeholder="Last Name"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.lastName?.message}
+                                    />
+                                )}
                             />
 
                         </View>
 
                         {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
-                        <AppInput
-                            placeholder="Email Address"
-                            iconName="mail-outline"
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            value={form.email}
-                            onChangeText={(text) => setForm({...form, email: text})}
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({ field: { onChange, value } }) => (
+                                <AppInput
+                                    placeholder="Email Address"
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    value={value}
+                                    onChangeText={onChange}
+                                    error={errors.email?.message}
+                                />
+                            )}
                         />
-                        <AppInput
-                            placeholder="Password"
-                            iconName="lock-closed-outline"
-                            isPassword={true}
-                            value={form.password}
-                            onChangeText={(text) => setForm({...form, password: text})}
+
+                        <Controller
+                            control={control}
+                            name="password"
+                            render={({ field: { onChange, value } }) => (
+                                <AppInput
+                                    placeholder="Password"
+                                    isPassword={true}
+                                    value={value}
+                                    onChangeText={onChange}
+                                    error={errors.password?.message}
+                                />
+                            )}
                         />
                     </View>
 
@@ -122,7 +168,7 @@ export default function SignUp() {
                     <View className="mt-6">
                         <AppButton
                             title={isLoading ? "Loading..." : "Sign up"}
-                            onPress={handleRegister}
+                            onPress={handleSubmit(onValidSubmit)}
                             disabled={isLoading}
                         />
                     </View>

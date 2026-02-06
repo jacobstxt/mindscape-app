@@ -8,7 +8,7 @@ import {serialize} from "object-to-formdata";
 
 export const authService = createApi({
     reducerPath: 'api/auth',
-    baseQuery: createBaseQuery('Auth'),
+    baseQuery: createBaseQuery('auth'),
     tagTypes: ['Account', 'AccountPassword'],
     endpoints: (builder) => ({
         login: builder.mutation<IAuthResponse, ILogin>({

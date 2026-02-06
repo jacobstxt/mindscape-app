@@ -10,23 +10,41 @@ import {SocialButton} from "@/src/components/auth/SocialAuthButton";
 import {useLoginMutation} from "@/src/services/AuthService";
 import {loginSuccess} from "@/src/store/authSlice";
 import {useAppDispatch} from "@/src/store";
-import {BASE_URL} from "@/src/constants/Urls";
-import {useForm} from "@/src/hooks/UseForm";
-import {ILogin} from "@/src/types/auth/ILogin";
+import {LoginFormData, loginSchema, RegisterFormData,} from "@/src/validation/authSchema";
+import {zodResolver} from "@hookform/resolvers/zod";
+import { useForm, Controller } from 'react-hook-form';
 
 
 export default function LogIn() {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [login, {isLoading, error}] = useLoginMutation();
+    const [login, {isLoading}] = useLoginMutation();
 
-    const { form, setForm } = useForm<ILogin>({
-        email: "",
-        password: "",
+
+    const {control, handleSubmit, formState: { errors }} = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        }
     });
 
 
-    const handleLogin = async () => {
+    const onValidSubmit = async (data: LoginFormData) => {
+        console.log("Attempting login with:", {data});
+        try {
+            const result = await login(data).unwrap();
+            dispatch(loginSuccess(result.token));
+        } catch (err: any) {
+            console.error("Login failed", err);
+            // Виводимо помилку, яку ми налаштували в AuthController на бекенді
+            Alert.alert("Помилка входу", err.data?.Errors?.Email || "Щось пішло не так");
+        }
+    };
+
+
+
+    /*const handleLogin = async () => {
         console.log("Base URL:", BASE_URL);
         console.log("Attempting login with:", {form});
 
@@ -37,7 +55,7 @@ export default function LogIn() {
             console.error("Login failed", err);
             Alert.alert("Помилка входу", "Невірний логін або пароль");
         }
-    };
+    };*/
 
     return (
         <ScreenGradient className="px-6">
@@ -63,20 +81,32 @@ export default function LogIn() {
                         
                         
                     <View className="gap-y-1">
-                        <AppInput
-                            placeholder="Email Address"
-                            iconName="mail-outline"
-                            keyboardType="email-address"
-                            value={form.email}
-                            onChangeText={(text) => setForm({...form, email: text})}
-                            autoCapitalize="none"
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({ field: { onChange, value } }) => (
+                                <AppInput
+                                    placeholder="Email Address"
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    value={value}
+                                    onChangeText={onChange}
+                                    error={errors.email?.message}
+                                />
+                            )}
                         />
-                        <AppInput
-                            placeholder="Password"
-                            iconName="lock-closed-outline"
-                            value={form.password}
-                            onChangeText={(text) => setForm({...form, password: text})}
-                            isPassword={true}
+                        <Controller
+                            control={control}
+                            name="password"
+                            render={({ field: { onChange, value } }) => (
+                                <AppInput
+                                    placeholder="Password"
+                                    isPassword={true}
+                                    value={value}
+                                    onChangeText={onChange}
+                                    error={errors.password?.message}
+                                />
+                            )}
                         />
                     </View>
 
@@ -84,7 +114,7 @@ export default function LogIn() {
                     <View className="mt-6">
                         <AppButton
                             title={isLoading ? "Loading..." : "Log in"}
-                            onPress={handleLogin}
+                            onPress={handleSubmit(onValidSubmit)}
                             disabled={isLoading}
                         />
                     </View>
