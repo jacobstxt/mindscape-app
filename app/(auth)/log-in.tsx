@@ -82,7 +82,7 @@ export default function LogIn() {
                         </View>
 
 
-                        <View className="mt-24">
+                        <View className="mt-16">
                         <AuthHeader
                             title="Welcome back!"
                             subtitle="Please log in to your account"
@@ -121,7 +121,7 @@ export default function LogIn() {
                         </View>
 
 
-                        <View className="mt-6">
+                        <View className="mt-2">
                             <AppButton
                                 title={"Log in"}
                                 onPress={handleSubmit(onValidSubmit)}

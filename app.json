@@ -4,8 +4,8 @@
     "slug": "mindscape-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myfirstapp",
+    "icon": "./assets/images/main-icon-new.png",
+    "scheme": "mindscape",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

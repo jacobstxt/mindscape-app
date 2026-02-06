@@ -82,7 +82,7 @@ export default function SignUp() {
                         </View>
 
 
-                        <View>
+                        <View className={'mt-8'}>
                         {/* Перевикористовую компонент з header */}
                         <AuthHeader
                             title="Create Account"
@@ -169,7 +169,7 @@ export default function SignUp() {
                         </View>
 
                         {/* Кнопка реєстрації */}
-                        <View className="mt-6">
+                        <View className="mt-2">
                             <AppButton
                                 title={isLoading ? "Loading..." : "Sign up"}
                                 onPress={handleSubmit(onValidSubmit)}
