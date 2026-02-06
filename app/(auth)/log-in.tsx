@@ -10,9 +10,10 @@ import {SocialButton} from "@/src/components/auth/SocialAuthButton";
 import {useLoginMutation} from "@/src/services/AuthService";
 import {loginSuccess} from "@/src/store/authSlice";
 import {useAppDispatch} from "@/src/store";
-import {LoginFormData, loginSchema, RegisterFormData,} from "@/src/validation/authSchema";
+import {LoginFormData, loginSchema} from "@/src/validation/authSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import { useForm, Controller } from 'react-hook-form';
+import {AppLoader} from "@/src/components/layout/AppLoader";
 
 
 export default function LogIn() {
@@ -20,8 +21,7 @@ export default function LogIn() {
     const dispatch = useAppDispatch();
     const [login, {isLoading}] = useLoginMutation();
 
-
-    const {control, handleSubmit, formState: { errors }} = useForm<LoginFormData>({
+    const {control, handleSubmit,setError, formState: { errors }} = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
@@ -34,14 +34,19 @@ export default function LogIn() {
         console.log("Attempting login with:", {data});
         try {
             const result = await login(data).unwrap();
-            dispatch(loginSuccess(result.token));
+
+            if (result && result.token) {
+                dispatch(loginSuccess(result.token));
+            } else {
+                setError("password", {
+                    type: "manual",
+                    message: "Невірна пошта або пароль"
+                });
+            }
         } catch (err: any) {
             console.error("Login failed", err);
-            // Виводимо помилку, яку ми налаштували в AuthController на бекенді
-            Alert.alert("Помилка входу", err.data?.Errors?.Email || "Щось пішло не так");
         }
     };
-
 
 
     /*const handleLogin = async () => {
@@ -58,99 +63,105 @@ export default function LogIn() {
     };*/
 
     return (
-        <ScreenGradient className="px-6">
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerClassName="pb-10"
+        <>
+            <AppLoader
+                visible={isLoading}
+                message="Входимо в систему..."
+            />
+            <ScreenGradient className="px-6">
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerClassName="pb-10"
+                    >
 
-                    <View className="items-start">
-                        <AppBackButton />
-                    </View>
-
-
-                    <View className="mt-24">
-                    <AuthHeader
-                        title="Welcome back!"
-                        subtitle="Please log in to your account"
-                        isIcon={false}
-                    />
-                        
-                        
-                    <View className="gap-y-1">
-                        <Controller
-                            control={control}
-                            name="email"
-                            render={({ field: { onChange, value } }) => (
-                                <AppInput
-                                    placeholder="Email Address"
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                    value={value}
-                                    onChangeText={onChange}
-                                    error={errors.email?.message}
-                                />
-                            )}
-                        />
-                        <Controller
-                            control={control}
-                            name="password"
-                            render={({ field: { onChange, value } }) => (
-                                <AppInput
-                                    placeholder="Password"
-                                    isPassword={true}
-                                    value={value}
-                                    onChangeText={onChange}
-                                    error={errors.password?.message}
-                                />
-                            )}
-                        />
-                    </View>
-
-
-                    <View className="mt-6">
-                        <AppButton
-                            title={isLoading ? "Loading..." : "Log in"}
-                            onPress={handleSubmit(onValidSubmit)}
-                            disabled={isLoading}
-                        />
-                    </View>
-
-                        <View className="mt-8">
-                            <View className="flex-row items-center mb-6">
-                                <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
-
-                                <Text className="mx-4 text-blue-900/40 dark:text-white/30 text-xs font-bold uppercase tracking-widest">
-                                    OR
-                                </Text>
-
-                                <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
-                            </View>
-
-                            <SocialButton type="google" onPress={() => console.log('Google login')} />
-                            <SocialButton type="apple" onPress={() => console.log('Apple login')} />
+                        <View className="items-start">
+                            <AppBackButton />
                         </View>
 
 
-                        <TouchableOpacity
-                            className="mt-6 items-center"
-                            activeOpacity={0.7}
-                            onPress={() => router.replace('/sign-up')}
-                        >
-                            <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
-                                Don&#39;t have an account?{' '}
-                                <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
-                                    Sign up
-                                </Text>
-                            </Text>
-                        </TouchableOpacity>
+                        <View className="mt-24">
+                        <AuthHeader
+                            title="Welcome back!"
+                            subtitle="Please log in to your account"
+                            isIcon={false}
+                        />
 
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </ScreenGradient>
+
+                        <View className="gap-y-1">
+                            <Controller
+                                control={control}
+                                name="email"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        placeholder="Email Address"
+                                        keyboardType="email-address"
+                                        autoCapitalize="none"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.email?.message}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                control={control}
+                                name="password"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        placeholder="Password"
+                                        isPassword={true}
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.password?.message}
+                                    />
+                                )}
+                            />
+                        </View>
+
+
+                        <View className="mt-6">
+                            <AppButton
+                                title={"Log in"}
+                                onPress={handleSubmit(onValidSubmit)}
+                                disabled={isLoading}
+                            />
+                        </View>
+
+                            <View className="mt-8">
+                                <View className="flex-row items-center mb-6">
+                                    <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
+
+                                    <Text className="mx-4 text-blue-900/40 dark:text-white/30 text-xs font-bold uppercase tracking-widest">
+                                        OR
+                                    </Text>
+
+                                    <View className="flex-1 h-[1px] bg-blue-200 dark:bg-white/10" />
+                                </View>
+
+                                <SocialButton type="google" onPress={() => console.log('Google login')} />
+                                <SocialButton type="apple" onPress={() => console.log('Apple login')} />
+                            </View>
+
+
+                            <TouchableOpacity
+                                className="mt-6 items-center"
+                                activeOpacity={0.7}
+                                onPress={() => router.replace('/sign-up')}
+                            >
+                                <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
+                                    Don&#39;t have an account?{' '}
+                                    <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
+                                        Sign up
+                                    </Text>
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </ScreenGradient>
+        </>
     );
 }

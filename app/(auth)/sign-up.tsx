@@ -10,11 +10,10 @@ import {AppBackButton} from "@/src/components/ui/AppBackButton";
 import {useRegisterMutation} from "@/src/services/AuthService";
 import {loginSuccess} from "@/src/store/authSlice";
 import {useAppDispatch} from "@/src/store";
-
-
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema, RegisterFormData } from "@/src/validation/authSchema"; // шлях до схеми
+import { registerSchema, RegisterFormData } from "@/src/validation/authSchema";
+import {AppLoader} from "@/src/components/layout/AppLoader"; // шлях до схеми
 
 
 export default function SignUp() {
@@ -58,137 +57,143 @@ export default function SignUp() {
     };*/
 
     return (
-        <ScreenGradient className="px-6">
-            {
-                /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
-                коли відкривається клавіатура. Це критично для UX.
-                */
-            }
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                className="flex-1"
-            >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerClassName="pb-10"
+        <>
+            <AppLoader
+                visible={isLoading}
+                message="Входимо в систему..."
+            />
+            <ScreenGradient className="px-6">
+                {
+                    /* KeyboardAvoidingView дозволяє формі "підстрибувати" вгору,
+                    коли відкривається клавіатура. Це критично для UX.
+                    */
+                }
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    className="flex-1"
                 >
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerClassName="pb-10"
+                    >
 
-                    <View className="items-start">
-                        <AppBackButton />
-                    </View>
-
-
-                    <View>
-                    {/* Перевикористовую компонент з header */}
-                    <AuthHeader
-                        title="Create Account"
-                        subtitle="Fill in your details below to join the Mindscape community."
-                        isIcon={false}
-                    />
-
-                    {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
-                    <View className="gap-y-1">
-
-                        <Controller control={control} name={"imageFile"}
-                                    render={({ field: { onChange } }) => (
-                                        <AppImagePicker
-                                            onImagePicked={(uri) => onChange({
-                                                uri, name: 'avatar.jpg', type: 'image/jpeg'
-                                            })}
-                                            error={errors.imageFile?.message}
-                                        />
-                                    )}
-                        />
-
-
-                        <View className="flex-row items-start gap-x-3">
-
-                            <Controller
-                                control={control}
-                                name="firstName"
-                                render={({ field: { onChange, value } }) => (
-                                    <AppInput
-                                        className="flex-1"
-                                        placeholder="First Name"
-                                        value={value}
-                                        onChangeText={onChange}
-                                        error={errors.firstName?.message}
-                                    />
-                                )}
-                            />
-
-                            <Controller
-                                control={control}
-                                name="lastName"
-                                render={({ field: { onChange, value } }) => (
-                                    <AppInput
-                                        className="flex-1"
-                                        placeholder="Last Name"
-                                        value={value}
-                                        onChangeText={onChange}
-                                        error={errors.lastName?.message}
-                                    />
-                                )}
-                            />
-
+                        <View className="items-start">
+                            <AppBackButton />
                         </View>
 
-                        {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
-                        <Controller
-                            control={control}
-                            name="email"
-                            render={({ field: { onChange, value } }) => (
-                                <AppInput
-                                    placeholder="Email Address"
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                    value={value}
-                                    onChangeText={onChange}
-                                    error={errors.email?.message}
+
+                        <View>
+                        {/* Перевикористовую компонент з header */}
+                        <AuthHeader
+                            title="Create Account"
+                            subtitle="Fill in your details below to join the Mindscape community."
+                            isIcon={false}
+                        />
+
+                        {/* Контейнер для полів введення. Використовую компонент AppInput та AppImagePicker */}
+                        <View className="gap-y-1">
+
+                            <Controller control={control} name={"imageFile"}
+                                        render={({ field: { onChange } }) => (
+                                            <AppImagePicker
+                                                onImagePicked={(uri) => onChange({
+                                                    uri, name: 'avatar.jpg', type: 'image/jpeg'
+                                                })}
+                                                error={errors.imageFile?.message}
+                                            />
+                                        )}
+                            />
+
+
+                            <View className="flex-row items-start gap-x-3">
+
+                                <Controller
+                                    control={control}
+                                    name="firstName"
+                                    render={({ field: { onChange, value } }) => (
+                                        <AppInput
+                                            className="flex-1"
+                                            placeholder="First Name"
+                                            value={value}
+                                            onChangeText={onChange}
+                                            error={errors.firstName?.message}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
 
-                        <Controller
-                            control={control}
-                            name="password"
-                            render={({ field: { onChange, value } }) => (
-                                <AppInput
-                                    placeholder="Password"
-                                    isPassword={true}
-                                    value={value}
-                                    onChangeText={onChange}
-                                    error={errors.password?.message}
+                                <Controller
+                                    control={control}
+                                    name="lastName"
+                                    render={({ field: { onChange, value } }) => (
+                                        <AppInput
+                                            className="flex-1"
+                                            placeholder="Last Name"
+                                            value={value}
+                                            onChangeText={onChange}
+                                            error={errors.lastName?.message}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                    </View>
 
-                    {/* Кнопка реєстрації */}
-                    <View className="mt-6">
-                        <AppButton
-                            title={isLoading ? "Loading..." : "Sign up"}
-                            onPress={handleSubmit(onValidSubmit)}
-                            disabled={isLoading}
-                        />
-                    </View>
+                            </View>
 
-                        <TouchableOpacity
-                            className="mt-6 items-center"
-                            activeOpacity={0.7}
-                            onPress={() => router.replace('/log-in')}
-                        >
-                            <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
-                                Already have an account?{' '}
-                                <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
-                                    Log in
+                            {/* autoCapitalize - вимикає shift який автоматично вмикає телефон  */}
+                            <Controller
+                                control={control}
+                                name="email"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        placeholder="Email Address"
+                                        keyboardType="email-address"
+                                        autoCapitalize="none"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.email?.message}
+                                    />
+                                )}
+                            />
+
+                            <Controller
+                                control={control}
+                                name="password"
+                                render={({ field: { onChange, value } }) => (
+                                    <AppInput
+                                        placeholder="Password"
+                                        isPassword={true}
+                                        value={value}
+                                        onChangeText={onChange}
+                                        error={errors.password?.message}
+                                    />
+                                )}
+                            />
+                        </View>
+
+                        {/* Кнопка реєстрації */}
+                        <View className="mt-6">
+                            <AppButton
+                                title={isLoading ? "Loading..." : "Sign up"}
+                                onPress={handleSubmit(onValidSubmit)}
+                                disabled={isLoading}
+                            />
+                        </View>
+
+                            <TouchableOpacity
+                                className="mt-6 items-center"
+                                activeOpacity={0.7}
+                                onPress={() => router.replace('/log-in')}
+                            >
+                                <Text className="text-blue-900/60 dark:text-blue-100/50 text-center px-10 leading-6 text-base">
+                                    Already have an account?{' '}
+                                    <Text className="text-[#1e3a8a] dark:text-white font-bold underline">
+                                        Log in
+                                    </Text>
                                 </Text>
-                            </Text>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
 
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </ScreenGradient>
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </ScreenGradient>
+        </>
     );
 }

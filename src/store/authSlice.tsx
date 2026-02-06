@@ -18,6 +18,18 @@ interface AuthState {
 }
 
 export const getUserFromToken = (token: string): User | null => {
+    if (!token || typeof token !== 'string') {
+        console.warn("getUserFromToken: Token is empty or not a string");
+        return null;
+    }
+
+    // 2. JWT повинен мати 2 крапки (три частини)
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+        console.warn("getUserFromToken: Invalid token format (missing parts)");
+        return null;
+    }
+
     try {
         const decoded: any = jwtDecode(token);
         console.log("Decoded JWT:", decoded); // optional, for debugging

@@ -94,3 +94,5 @@ To learn more about developing your project with Expo, look at the following res
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 - [React Native documentation](https://reactnative.dev/)
 - [Nativewind](https://www.nativewind.dev/)
+
+https://lottiefiles.com/free-animation/loading-40-paperplane-pXSmJB5J2C

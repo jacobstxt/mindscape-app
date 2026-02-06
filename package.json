@@ -36,6 +36,7 @@
     "expo-web-browser": "~15.0.10",
     "import": "^0.0.6",
     "jwt-decode": "^4.0.0",
+    "lottie-react-native": "~7.3.1",
     "nativewind": "^4.2.1",
     "object-to-formdata": "^4.5.1",
     "prettier-plugin-tailwindcss": "^0.5.14",
